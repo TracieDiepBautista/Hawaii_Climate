@@ -22,6 +22,7 @@ climate analysis and data exploration of the climate database of Hawaii | Honolu
 - Pandas
 - Matplotlib
 - Python 
+- Flask
 - t-test method 
 
 
@@ -42,6 +43,14 @@ When focus on specific station (code: ) to obserb the teperature for most recent
 Sometimes Hawaii got hotter with 80F at nearly 30 times in the entire observed year.
 
 The temperature were rarely cool down to 60F with below 10 times in the entire year. 
+
+
+## Author: Tracie Bautista
+
+Data Analyst
+
+linkedin: https://www.linkedin.com/in/tracynguyen10/
+
 
 
 
