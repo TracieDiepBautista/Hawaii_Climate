@@ -1,4 +1,14 @@
 
+## What is what in this repo?
+
+1. Readme.md: this file as a summary of this project and telling you the structure of this repo files
+2. Main.py: my codes in python saved without outputs to save your time viewing
+3. climate_queries.ipynb: my codes (with outputs) that query data for analysis
+4. app.py: my codes to make api/route via Flask
+5. Outputs: the images of graphs, JSON-format outputs from api
+6. Resources: data sources
+7. temp_analysis_part1 | part_2: deeper analysis (unfinished) 
+
 ## What are the Project requirements?
 
 
