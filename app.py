@@ -104,6 +104,7 @@ def sean(start = None, end = None):
     tobs = session.query(func.min(measurement.tobs), func.avg(measurement.tobs),\
         func.max(measurement.tobs)).filter(measurement.date >= start).first()
     print(tobs)
+    session.close()
     """return the temp if the date input by users are matched
        or a 404 if not."""
 
