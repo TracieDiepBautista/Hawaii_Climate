@@ -1,3 +1,4 @@
+from tkinter import Y
 import numpy as np
 import pandas as pd
 import datetime as dt
@@ -97,47 +98,47 @@ def phleoo():
     return jsonify(temp)
 
 @app.route('/api/v1.0/<start>')
+@app.route('/api/v1.0/<start>/<end>')
 def sean(start = None, end = None):
 
     # create link to DB browser and query the data out
     session = Session(engine)
-    tobs = session.query(func.min(measurement.tobs), func.avg(measurement.tobs),\
-        func.max(measurement.tobs)).filter(measurement.date >= start).first()
-    print(tobs)
-    session.close()
+    select_list = [func.min(measurement.tobs), func.avg(measurement.tobs),\
+        func.max(measurement.tobs)]
+    
     """return the temp if the date input by users are matched
        or a 404 if not."""
+    
+    # if user just input start date:
+    if not end:
+        start = dt.datetime.strptime(start, "%M-%d-%Y")
 
-    #temp_per_date = start.replace(" ", "").lower()
-    #if not end:
-    #     #start = dt.datetime.strptime(start, "%m%d%y")
+        # get the result:
+        result = session.query(*select_list).filter(measurement.date >= start).all()
 
-    #     # get the result if not end:
-    #     result = session.query(*tobs).filter(measurement.date >= start).all()
-    #     session.close()
+    # convert the tuples outputs into a normal list to view api:
 
-    # for start in result:
-    #     date_search = start["date"].replace(" ", "").lower()
-    temp = []
-    for min, avg, max in tobs:
-             tobs_dict = {}
-             tobs_dict['Min'] = min
-             tobs_dict['Average'] = avg
-             tobs_dict['Max'] = max
-             temp.append(tobs_dict)
+        temp = list(np.ravel(result))
 
-    #     #if date_search == temp_per_date:
-    #         #temp = list(np.ravel(result))
+        return jsonify(temp=temp)
 
-    return jsonify(temp)
+    # if user input both start / end dates
+    # define the start / end dates format first:
+    
+    start = dt.datetime.strptime(start, '%m-%d-%Y')
+    end = dt.datetime.strptime(end,'%m-%d-%Y')
 
-    #return jsonify({"error": "Character not found."}), 404
+    # get the result:
+    results = session.query(*select_list).\
+            filter(measurement.date>=start).\
+                filter(measurement.date<=end).all()
+    session.close()
+    
+    # convert the tuples outputs into a normal list to view api:
 
+    temps = list(np.ravel(results))
 
-#@app.route('/api/v1.0/<start>/<end>')
-#def hanah():
-#    return jsonify('the avg | highest | lowest temperature from start date to end date')
-
+    return jsonify(temps=temps)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+        app.run()
