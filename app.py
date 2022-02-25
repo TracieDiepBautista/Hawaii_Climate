@@ -97,38 +97,45 @@ def phleoo():
     return jsonify(temp)
 
 @app.route('/api/v1.0/<start>')
-def sean(start_date):
+def sean(start = None, end = None):
 
     # create link to DB browser and query the data out
     session = Session(engine)
     tobs = session.query(func.min(measurement.tobs), func.avg(measurement.tobs),\
-        func.max(measurement.tobs)).filter(measurement.date >= start_date).all()
-    session.close()
-
+        func.max(measurement.tobs)).filter(measurement.date >= start).first()
+    print(tobs)
     """return the temp if the date input by users are matched
        or a 404 if not."""
 
-    #temp_per_date = start_date.replace(" ", "").lower()
+    #temp_per_date = start.replace(" ", "").lower()
+    #if not end:
+    #     #start = dt.datetime.strptime(start, "%m%d%y")
 
-    for start_date in tobs:
-        #date_search = start_date["date"].replace(" ", "").lower()
-        date_search = []
-        for min, avg, max in tobs:
-            tobs_dict = {}
-            tobs_dict['Min'] = min
-            tobs_dict['Average'] = avg
-            tobs_dict['Max'] = max
-            date_search.append(tobs_dict)
+    #     # get the result if not end:
+    #     result = session.query(*tobs).filter(measurement.date >= start).all()
+    #     session.close()
 
-        #if date_search == temp_per_date:
-        return jsonify(date_search)
+    # for start in result:
+    #     date_search = start["date"].replace(" ", "").lower()
+    temp = []
+    for min, avg, max in tobs:
+             tobs_dict = {}
+             tobs_dict['Min'] = min
+             tobs_dict['Average'] = avg
+             tobs_dict['Max'] = max
+             temp.append(tobs_dict)
 
-    return jsonify({"error": "Character not found."}), 404
+    #     #if date_search == temp_per_date:
+    #         #temp = list(np.ravel(result))
+
+    return jsonify(temp)
+
+    #return jsonify({"error": "Character not found."}), 404
 
 
-@app.route('/api/v1.0/<start>/<end>')
-def hanah():
-    return jsonify('the avg | highest | lowest temperature from start date to end date')
+#@app.route('/api/v1.0/<start>/<end>')
+#def hanah():
+#    return jsonify('the avg | highest | lowest temperature from start date to end date')
 
 
 if __name__ == "__main__":
