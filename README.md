@@ -1,6 +1,6 @@
 
 ```diff
-@@ What is what in this repo? @@
+- File structure: 
 ```
 
         1. Readme.md: this file as a summary of this project and telling you the structure of this repo files
